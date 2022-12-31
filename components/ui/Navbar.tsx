@@ -19,7 +19,7 @@ export const Navbar = () => {
 						md:relative md:flex md:items-center md:grow ${ isMenuOpened ? 'hidden' : 'absolute' }`}
 					>
 						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Home</li>
-						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Tus foros</li>
+						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Crear posts</li>
 						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Crear foro</li>
 					</ul>
 

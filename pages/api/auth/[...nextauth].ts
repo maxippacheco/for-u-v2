@@ -20,8 +20,10 @@ export default NextAuth({
       async authorize(credentials) {
         console.log({credentials})
         // return { name: 'Juan', correo: 'juan@google.com', role: 'admin' };
+        const res = await dbUsers.checkUserEmailPassword(credentials?.email!, credentials?.password!);
 
-        return await dbUsers.checkUserEmailPassword( credentials!.email, credentials!.password );
+
+        return res as any;
 
       }
     }),
@@ -41,7 +43,7 @@ export default NextAuth({
 
   // Custom Pages
   pages: {
-    // signIn: '/auth/login',
+    signIn: '/auth/login',
     newUser: '/auth/register'
   },
 
@@ -60,18 +62,19 @@ export default NextAuth({
   callbacks: {
 
     async jwt({ token, account, user }) {
-      // console.log({ token, account, user });
-
       if ( account ) {
         token.accessToken = account.access_token;
 
         switch( account.type ) {
 
+          // redes sociales
           case 'oauth': 
             token.user = await dbUsers.oAUthToDbUser( user?.email || '', user?.name || '' );
           break;
 
           case 'credentials':
+            console.log({token});
+            
             token.user = user;
           break;
         }
@@ -83,10 +86,11 @@ export default NextAuth({
 
 
     async session({ session, token, user }){
-      // console.log({ session, token, user });
 
       session.accessToken = token.accessToken;
       session.user = token.user as any;
+      
+
 
       return session;
     }

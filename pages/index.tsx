@@ -1,12 +1,20 @@
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
+import { getSession, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { getToken } from 'next-auth/jwt';
 
 interface Props {
   postsSSR: any;
 }
 
 export default function Home() {
+
+  const { data, status } = useSession()
+  
+  console.log({ data, status });
+  
 
   return (
     <AppLayout title="Welcome to For U">
@@ -31,7 +39,7 @@ export default function Home() {
         </div>
 
         {/* Posts */}
-    		<div className='grow md:w-2/4 h-home overflow-y-scroll'>
+    		<div className='grow md:w-2/4 h-screen overflow-y-scroll'>
             <Post />
             <Post />
             <Post />

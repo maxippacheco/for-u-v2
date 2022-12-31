@@ -8,3 +8,7 @@ export interface IUser{
 	role?: 'client' | 'admin';
 	_id: string;
 }
+
+export interface ILoggedUser{
+	
+}
