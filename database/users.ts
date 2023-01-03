@@ -25,6 +25,7 @@ export const checkUserEmailPassword = async( email: string, password: string ) =
         _id,
         email: email.toLocaleLowerCase(),
         role,
+        image: '',
         name,
     }
 }

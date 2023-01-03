@@ -14,7 +14,7 @@ const userSchema = new Schema<IUser>({
 			required: true
 		}
 	},
-	avatar: { type: String },
+	image: { type: String },
 	status: { type: String, default: 'offline' }
 	
 }, {

@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 export const Navbar = () => {
 	
   const [isMenuOpened, setToggleMenu] = useState(true);
+	const router = useRouter();
 
   const handleToggleMenu = () => setToggleMenu(!isMenuOpened);
 	
@@ -18,8 +21,12 @@ export const Navbar = () => {
 						className={`absolute left-0 top-20 bg-sky-700 md:bg-sky-600 w-full text-center md:top-0 p-3 
 						md:relative md:flex md:items-center md:grow ${ isMenuOpened ? 'hidden' : 'absolute' }`}
 					>
-						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Home</li>
-						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Crear posts</li>
+						<li className="md:px-3 md:py-0 py-6 text-white text-lg">
+							<Link href={'/'}>Home</Link>
+						</li>
+						<li className="md:px-3 md:py-0 py-6 text-white text-lg">
+							<Link href={'/posts/create'}>Crear Posts</Link>
+						</li>
 						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Crear foro</li>
 					</ul>
 

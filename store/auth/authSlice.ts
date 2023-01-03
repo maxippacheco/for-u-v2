@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../../interfaces'
 
+
 export interface AuthState {
   user: IUser | null,
 	token: string | null,
@@ -26,6 +27,7 @@ export const authSlice = createSlice({
       state.isChecking = false;
 		}
   },
+
 })
 
 // Action creators are generated for each case reducer function

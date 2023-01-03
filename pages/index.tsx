@@ -1,9 +1,10 @@
+import { useEffect, useMemo } from 'react';
+import { useSession } from 'next-auth/react';
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
-import { useSession } from 'next-auth/react';
-import { useEffect, useMemo } from 'react';
 import { useAuthStore } from '../hooks';
+import { IUser } from '../interfaces/user';
 
 interface Props {
   postsSSR: any;
@@ -16,16 +17,11 @@ export default function Home() {
 
   console.log(session);
   
-  if(!session) return <>Holaaa</>
+  if(!session ) return <>Holaaa</>
+
 
   if( status === 'authenticated' ) {
-      startSetttingUser({
-        name: 'pepito',
-        email: '',
-        password: '',
-        status: 'online',
-        _id: ''
-      })
+      startSetttingUser(session.user as IUser)
     }
 
 
