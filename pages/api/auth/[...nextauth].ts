@@ -18,8 +18,7 @@ export default NextAuth({
         password: { label: 'Contraseña:', type: 'password', placeholder: 'Contraseña'  },
       },
       async authorize(credentials) {
-        console.log({credentials})
-        // return { name: 'Juan', correo: 'juan@google.com', role: 'admin' };
+         // return { name: 'Juan', correo: 'juan@google.com', role: 'admin' };
         const res = await dbUsers.checkUserEmailPassword(credentials?.email!, credentials?.password!);
 
 
@@ -69,11 +68,11 @@ export default NextAuth({
 
           // redes sociales
           case 'oauth': 
+            
             token.user = await dbUsers.oAUthToDbUser( user?.email || '', user?.name || '' );
           break;
 
           case 'credentials':
-            console.log({token});
             
             token.user = user;
           break;

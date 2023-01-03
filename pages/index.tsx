@@ -1,9 +1,9 @@
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
-import { getSession, useSession } from 'next-auth/react';
-import { useEffect } from 'react';
-import { getToken } from 'next-auth/jwt';
+import { useSession } from 'next-auth/react';
+import { useEffect, useMemo } from 'react';
+import { useAuthStore } from '../hooks';
 
 interface Props {
   postsSSR: any;
@@ -11,10 +11,23 @@ interface Props {
 
 export default function Home() {
 
-  const { data, status } = useSession()
+  const { data: session, status } = useSession()
+  const { startSetttingUser } = useAuthStore();
+
+  console.log(session);
   
-  console.log({ data, status });
-  
+  if(!session) return <>Holaaa</>
+
+  if( status === 'authenticated' ) {
+      startSetttingUser({
+        name: 'pepito',
+        email: '',
+        password: '',
+        status: 'online',
+        _id: ''
+      })
+    }
+
 
   return (
     <AppLayout title="Welcome to For U">

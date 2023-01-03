@@ -21,8 +21,8 @@ export const authSlice = createSlice({
     startChecking(state){
       state.isChecking = true;
     },
-		setUser(state, action: PayloadAction<IUser>){
-      state.user = action.payload;
+		setUser(state, { payload }: PayloadAction<IUser>){
+      state.user = payload;
       state.isChecking = false;
 		}
   },

@@ -1,21 +1,35 @@
+import { useState, useEffect } from 'react';
+import { GetServerSideProps } from 'next'
+import { useRouter } from 'next/router';
 import Image from 'next/image'
 import NextLink from 'next/link';
+import { signIn, getSession, getProviders } from 'next-auth/react';
+import { useForm } from 'react-hook-form';
 import Google from '../../public/google.svg'
 import Github from '../../public/github.svg'
-import { useForm } from 'react-hook-form';
 import { ILoginData } from '../../interfaces/auth';
-import { signIn, useSession, getSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
 
 
 export default function login(){
 
 	
+	const [providers, setProviders] = useState<any>({});
+
+	useEffect(() => {
+		getProviders().then( provider => {
+			setProviders(provider)
+			
+		})
+		
+	}, [])
+	
+
 	const { register, setValue, handleSubmit, formState: { errors } } = useForm<ILoginData>();
  
 	const onSubmit = async({ email, password }: ILoginData) => {
 		signIn('credentials', { email, password })
 	}
+
 
 
 
@@ -65,18 +79,41 @@ export default function login(){
 							p-2.5 rounded-full text-white text-lg hover:cursor-pointer hover:brightness-95' 
 						/>
 					</div>
+
 					<div className='w-full flex flex-row justify-center mt-9'>
-						<div className='w-1/2 flex justify-end mr-2'>
-							<button className='flex flex-row items-center border-2 border-black p-3 rounded-full w-full'>
+
+					{
+						Object.values( providers ).map( (provider: any) => {
+							if( provider.id === 'credentials' ) return (<div id="credentials" key={'credentials'}></div>)
+							
+							return(
+								<div className='w-1/2 flex justify-end mr-2' key={ provider.id }>
+									<button 
+										className='flex flex-row items-center border-2 border-black p-3 rounded-full w-full' 
+										// TODO FIX
+										onClick={ () => signIn( provider.id ) }
+									>
+										<Image 
+											src={ provider.id === 'google' ? Google : Github } 
+											alt="social-media" 
+											className='w-8 h-8 mr-2' 
+										/> { provider.name }
+									</button>
+								</div>
+							)
+						})
+					}
+						{/* <div className='w-1/2 flex justify-end mr-2'>
+							<button className='flex flex-row items-center border-2 border-black p-3 rounded-full w-full' onClick={ () => signIn('google') }>
 								<Image src={ Google } alt="google" className='w-8 h-8 mr-2' /> Google
 							</button>
 						</div>
 
 						<div className='w-1/2 flex justify-start'>
 							<button className='flex flex-row items-center border-2 border-black p-3 rounded-full w-full'>
-								<Image src={ Github } alt="github" className='w-8 h-8 mr-2' /> Github
+								<Image src={ Github } alt="github" className='w-8 h-8 mr-2' onClick={ () => signIn('github') } /> Github
 							</button>
-						</div>
+						</div> */}
 					</div>
 
 					<div className='mt-5 underline text-gray-500'>
@@ -91,4 +128,27 @@ export default function login(){
 
 	</div>
 	)
+}
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
+	const session = await getSession({ req }) // your fetch function here 
+
+	if( session ) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false
+			}
+		}
+	}
+
+
+	return {
+		props: {
+			
+		}
+	}
 }

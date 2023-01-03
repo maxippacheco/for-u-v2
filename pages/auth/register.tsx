@@ -1,7 +1,17 @@
 import NextLink from 'next/link';
+import { useForm } from 'react-hook-form';
+import { IRegisterData } from '../../interfaces/auth';
 
 
 export function register(){
+
+	const { register, setValue, handleSubmit, formState: { errors } } = useForm<IRegisterData>();
+
+	const onSubmit = (data: IRegisterData) => {
+		console.log(data);
+	}
+	
+
 	return(
 		<div className='w-screen h-screen bg-sky-500 flex flex-col'>
 
@@ -13,23 +23,37 @@ export function register(){
 					<span className='text-gray-500'>The best site to know about the community</span>
 				</div>
 
-				<form className='md:w-3/5 w-11/12'>
+				<form className='md:w-3/5 w-11/12' onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex flex-col justify-center items-center'>
 						
 						<div className='flex flex-col w-full mb-10'>
 							<label htmlFor="email" className='absolute translate-x-7 -translate-y-2 px-2 bg-white'>Enter your email</label>
-							<input type="email" className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none' />
+							<input 
+								type="email"
+								autoComplete='off'
+								className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none'
+								{ ...register('email') }
+							/>
 						</div>
 						
 						<div className='flex flex-col w-full mb-10'>
-							<label htmlFor="username" className='absolute translate-x-7 -translate-y-2 px-2 bg-white'>Enter your name</label>
-							<input type="text" className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none' />
+							<label htmlFor="name" className='absolute translate-x-7 -translate-y-2 px-2 bg-white'>Enter your name</label>
+							<input 
+								type="text"
+								autoComplete='off'
+								className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none'
+								{ ...register('name') }
+							/>
 						</div>
 
 						
 						<div className='flex flex-col w-full mb-10'>
 							<label htmlFor="password" className='absolute translate-x-7 -translate-y-2 px-2 bg-white'>Enter your password</label>
-							<input type="password" className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none' />
+							<input 
+								type="password" 
+								className='p-5 border-2 border-black rounded-full focus:border-sky-500 focus:outline-none'
+								{ ...register('password') }
+							/>
 						</div>
 
 						<div className='w-full'>
