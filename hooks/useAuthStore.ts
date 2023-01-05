@@ -1,9 +1,10 @@
 import { IUser } from "../interfaces";
 import { setUser, startChecking } from "../store/auth";
-import { useAppDispatch } from "./appHooks"
+import { useAppDispatch, useAppSelector } from "./appHooks"
 
 export const useAuthStore = () => { 
 
+	const { isChecking, user } = useAppSelector( state => state.auth );
 	const dispatch = useAppDispatch();
 
 	const startRegister = async(email: string, username: string, password: string ) => { 
@@ -17,7 +18,9 @@ export const useAuthStore = () => {
 	}
 
 	return {
-		startSetttingUser
+		user,
+		isChecking,
+		startSetttingUser,
 	}
 
 }

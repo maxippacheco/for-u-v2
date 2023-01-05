@@ -26,15 +26,16 @@ export const postSlice = createSlice({
 			state.posts.push(payload)
 			state.loadingPosts = false;
 		},
-		loadPosts(){
-			
+		loadPosts(state, { payload }: PayloadAction<IPost[]>){
+			state.loadingPosts = false;
+			state.posts = payload;
 		}
   },
 
 })
 
 // Action creators are generated for each case reducer function
-export const { createPost } = postSlice.actions
+export const { createPost, checkPosts, loadPosts } = postSlice.actions
 
 export default postSlice.reducer
 

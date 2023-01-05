@@ -1,18 +1,31 @@
 import { forUApi } from "../api";
-import { useAppDispatch } from "./appHooks";
+import { IPost } from "../interfaces";
+import { checkPosts, createPost, loadPosts } from "../store/post";
+import { useAppDispatch, useAppSelector } from "./appHooks";
 
 export const usePostStore = () => {
 	
+	const { posts, loadingPosts } = useAppSelector( state => state.post );
 	const dispatch = useAppDispatch();
 
 	const startCreatingPost = async(title: string, description: string) => {
+		dispatch( checkPosts() )
 		const post = await forUApi.post('/post', { title, description });
+		dispatch( createPost( post.data ) )	
+	}
 
-		console.log(post.data);
-		
+	const startLoadingAllPosts = (posts: IPost[]) => {
+		dispatch( checkPosts() );
+		dispatch( loadPosts( posts ) )
 	}
 
 	return {
-		startCreatingPost
+		posts,
+		loadingPosts,
+
+		
+		startCreatingPost,
+		startLoadingAllPosts,
+
 	}
 }

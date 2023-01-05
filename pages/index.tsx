@@ -1,28 +1,37 @@
-import { useEffect, useMemo } from 'react';
+import { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
-import { useAuthStore } from '../hooks';
+import { useAuthStore, usePostStore } from '../hooks';
 import { IUser } from '../interfaces/user';
+import { forUApi } from '../api';
+import { IPost } from '../interfaces';
+import { useEffect } from 'react';
 
 interface Props {
-  postsSSR: any;
+  postsSSR: IPost[];
 }
 
-export default function Home() {
+export default function Home({ postsSSR }: Props) {
 
   const { data: session, status } = useSession()
-  const { startSetttingUser } = useAuthStore();
-
-  console.log(session);
+  const { startSetttingUser, isChecking } = useAuthStore();
+  const { startLoadingAllPosts, posts  } = usePostStore();
   
-  if(!session ) return <>Holaaa</>
+  useEffect(() => {
+    startLoadingAllPosts( postsSSR );
+  
+  }, [])
+    
+  if( isChecking ) return <>Holaaa</>
 
-
-  if( status === 'authenticated' ) {
-      startSetttingUser(session.user as IUser)
-    }
+  useEffect(() => {
+    
+    startSetttingUser( session?.user as IUser)
+ 
+  }, [])
+  
 
 
   return (
@@ -49,11 +58,11 @@ export default function Home() {
 
         {/* Posts */}
     		<div className='grow md:w-2/4 h-screen overflow-y-scroll'>
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            {
+              posts.map( post => (
+                <Post post={ post } />
+              ))
+            }
 
         </div>
         
@@ -95,22 +104,22 @@ export default function Home() {
 //- The data can be publicly cached (not user-specific).
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 
-// export const getStaticProps: GetStaticProps = async () => {
-//   const { data } = await foroApi.get('/posts'); // your fetch function here 
+export const getStaticProps: GetStaticProps = async () => {
+  const { data } = await forUApi.get('/post'); // your fetch function here 
     
-//   if (!data) {
-//     return {
-//       redirect: {
-//         destination: '/auth/login',
-//         permanent: false,
-//         // statusCode: 301
-//       },
-//     }
-//   }
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false,
+        // statusCode: 301
+      },
+    }
+  }
 
-//   return {
-//     props: {
-//       postsSSR: data
-//     }
-//   }
-// }
+  return {
+    props: {
+      postsSSR: data
+    }
+  }
+}
