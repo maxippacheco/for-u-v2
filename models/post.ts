@@ -12,7 +12,7 @@ const postSchema = new Schema<IPost>({
 	},
 	user: {
 		type: Schema.Types.ObjectId,
-		ref: 'user'
+		ref: 'User'
 	},
 
 
