@@ -60,7 +60,7 @@ export default function Home({ postsSSR }: Props) {
     		<div className='grow md:w-2/4 h-screen overflow-y-scroll'>
             {
               posts.map( post => (
-                <Post post={ post } />
+                <Post post={ post } key={ post._id } />
               ))
             }
 

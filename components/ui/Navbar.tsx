@@ -25,9 +25,11 @@ export const Navbar = () => {
 							<Link href={'/'}>Home</Link>
 						</li>
 						<li className="md:px-3 md:py-0 py-6 text-white text-lg">
-							<Link href={'/posts/create'}>Crear Posts</Link>
+							<Link href={'/posts/create'}>Create Posts</Link>
 						</li>
-						<li className="md:px-3 md:py-0 py-6 text-white text-lg">Crear foro</li>
+						<li className="md:px-3 md:py-0 py-6 text-white text-lg">
+							<Link href={'/community/create'}>Create Community</Link>
+						</li>
 					</ul>
 
 					<div className='flex md:hidden w-full items-center ml-3'>
