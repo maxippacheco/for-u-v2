@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useCommunityStore } from '../../hooks';
 import { AppLayout } from "../../layouts";
 
 interface ICommunityData{
@@ -8,10 +9,10 @@ interface ICommunityData{
 export default function create(){
 
 	const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<ICommunityData>();
+	const { startCreattingCommunity } = useCommunityStore();
 
 	const onSubmit = ({ name }: ICommunityData) => {
-		console.log(name);
-		
+		startCreattingCommunity( name );
 		reset()
 	}
 

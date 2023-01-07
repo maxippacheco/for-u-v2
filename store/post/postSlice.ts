@@ -21,7 +21,6 @@ export const postSlice = createSlice({
 		checkPosts(state){
 			state.loadingPosts = true;
 		},
-		// todo add IPost type
 		createPost( state, { payload }: PayloadAction<IPost> ){
 			state.posts.push(payload)
 			state.loadingPosts = false;
