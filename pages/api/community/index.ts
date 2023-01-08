@@ -7,12 +7,16 @@ import { db } from "../../../database";
 type Data =
 | { message: string; }
 | ICommunity
+| ICommunity[]
 
 export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 
 	switch (req.method) {
 		case "POST":
 			return createCommunity(req, res);
+		
+		case "GET":
+			return getAllCommunities( req, res);
 
 		default:
 			return res.status(400).json({
@@ -53,4 +57,14 @@ const createCommunity = async(req: NextApiRequest, res: NextApiResponse<Data>) =
 
 
 
+}
+
+
+const getAllCommunities = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
+	await db.connect();
+	// TODO POPULATE
+	const communities = await Community.find().lean()
+	await db.disconnect();
+
+	return res.json(communities)
 }

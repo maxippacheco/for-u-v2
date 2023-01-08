@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
-import { useAuthStore, usePostStore } from '../hooks';
+import { useAuthStore, useCommunityStore, usePostStore } from '../hooks';
 import { IUser } from '../interfaces/user';
 import { forUApi } from '../api';
 import { IPost } from '../interfaces';
@@ -17,20 +17,23 @@ export default function Home({ postsSSR }: Props) {
 
   const { data: session, status } = useSession()
   const { startSetttingUser, isChecking } = useAuthStore();
+  const { startLoadingCommunities, communities, isCommunityReady } = useCommunityStore();
   const { startLoadingAllPosts, posts  } = usePostStore();
   
   useEffect(() => {
     startLoadingAllPosts( postsSSR );
-  
   }, [])
     
   if( isChecking ) return <>Holaaa</>
 
   useEffect(() => {
-    
     startSetttingUser( session?.user as IUser)
- 
   }, [])
+
+  useEffect(() => {
+    startLoadingCommunities()
+  }, [])
+  
   
 
 
@@ -82,14 +85,21 @@ export default function Home({ postsSSR }: Props) {
 
             <div className='w-11/12 h-auto bg-white p-3 rounded-lg'>
               <h2 className='text-center'>Recommended foros</h2>
-              <div className='flex flex-row items-center justify-between'>
                 {/* IMAGE */}
-                <div className='flex flex-row items-center'>
-                  <div className='w-10 h-10 bg-gray-600 mr-2 rounded-full' />
-                  <span>f/software_engineering</span>
-                </div>
-                <AiOutlineUsergroupAdd className='xl:flex hidden text-2xl' />
-              </div>
+
+                {
+                  communities.slice(0, 3).map( community => (
+                    <div className='flex flex-row items-center justify-between my-4'>
+                      <div className='flex flex-row items-center'>
+                        <div className='w-10 h-10 bg-gray-600 mr-2 rounded-full' />
+                        <span>{community.name}</span>
+                      </div>
+                      <AiOutlineUsergroupAdd className='xl:flex hidden text-2xl' />
+                    </div>
+                  ))
+                }
+
+                <div className='text-center text-sky-500 cursor-pointer'>See more...</div>
             </div>
           </div>
         </div>

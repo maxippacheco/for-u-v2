@@ -10,18 +10,21 @@ export const useCommunityStore = () => {
 
 	const startCreattingCommunity = async(name: string ) => {
 		dispatch( checkingCommunities() );
-		const { data: community } = await forUApi.post('http://localhost:3000/api/community/', { name });
+		const { data: community } = await forUApi.post('/community', { name });
 		dispatch( createCommunity(community ) )
 	}
 
-	const startLoadingCommunities = (com: ICommunity[]) => {
+	const startLoadingCommunities = async() => {
 		dispatch(checkingCommunities());
-		dispatch(loadCommunities(com));
+		const { data: communities } = await forUApi.get('/community');
+		dispatch(loadCommunities(communities));
 	}
 
 
 	return{
 		startCreattingCommunity,
-		startLoadingCommunities
+		startLoadingCommunities,
+		communities,
+		isCommunityReady
 	}
 }

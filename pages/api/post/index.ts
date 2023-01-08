@@ -58,7 +58,6 @@ const createPost = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 const getAllPosts = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 	await db.connect();
-	// TODO POPULATE
 	const posts = await Post.find().populate('user', '_id name email role status').lean()
 	await db.disconnect();
 
