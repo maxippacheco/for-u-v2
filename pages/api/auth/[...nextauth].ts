@@ -42,7 +42,7 @@ export default NextAuth({
 
   // Custom Pages
   pages: {
-    signIn: '/auth/login',
+    // signIn: '/auth/login',
     newUser: '/auth/register'
   },
 
@@ -59,8 +59,8 @@ export default NextAuth({
 
 
   callbacks: {
-
     async jwt({ token, account, user }) {
+      
       if ( account ) {
         token.accessToken = account.access_token;
 
@@ -68,7 +68,6 @@ export default NextAuth({
 
           // redes sociales
           case 'oauth': 
-            
             token.user = await dbUsers.oAUthToDbUser( user?.email || '', user?.name || '' );
           break;
 
