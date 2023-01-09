@@ -27,12 +27,22 @@ export const communitySlice = createSlice({
 		loadCommunities(state, { payload }: PayloadAction<ICommunity[]>){
 			state.isCommunityReady = false;
 			state.communities = payload;
+		},
+		updateCommunityUsers(state, { payload }: PayloadAction<ICommunity>){
+			state.communities = state.communities.map( community => {
+				// SI EL PAYLOAD ES IGUAL A LA COMUNIDAD QUE SE ACTUALIZA RETORNALA
+				if( community._id === payload._id ){
+					return payload;
+				}
+
+				return community;
+			})
 		}
 	}
 })
 
 // Action creators are generated for each case reducer function
-export const { checkingCommunities, loadCommunities, createCommunity } = communitySlice.actions
+export const { checkingCommunities, loadCommunities, createCommunity, updateCommunityUsers } = communitySlice.actions
 
 export default communitySlice.reducer
 

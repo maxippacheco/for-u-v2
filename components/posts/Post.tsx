@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRouter } from 'next/router';
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai'
 import { IPost } from '../../interfaces';
 
@@ -9,6 +10,8 @@ interface Props{
 
 export const Post = ({ post }: Props) => {
 	
+	const router = useRouter()
+
 	return (
 			<div className='grow m-2 h-auto bg-gray-100 rounded-lg'>
 				<div className='p-2 flex items-center'>
@@ -16,7 +19,10 @@ export const Post = ({ post }: Props) => {
 					<div className='flex grow justify-between'>
 						<div className='flex sm:flex-row flex-col'>
 							<span className='mx-2 text-gray-800'>{ post.user.name }</span>
-							<span className='mx-2 text-gray-800 text-sm md:text-base'>Posted in <span className='text-sky-700'>RealGamers_arg</span></span>
+							<span 
+								className='mx-2 text-gray-800 text-sm md:text-base cursor-pointer'
+								onClick={ () => router.push(`/community/${ post.community._id }`)}
+							>Posted in <span className='text-sky-700'>{ post.community.name.slice(0, 11) }...</span></span>
 						</div>
 						<span className='mx-2 text-gray-800 text-sm'>12/02/23</span>
 					</div>

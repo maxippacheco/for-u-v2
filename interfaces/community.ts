@@ -6,4 +6,5 @@ export interface ICommunity{
 	owner: IUser;
 	posts: IPost[];
 	users: IUser[];
+	_id: string;
 }

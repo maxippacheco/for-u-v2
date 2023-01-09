@@ -8,9 +8,9 @@ export const usePostStore = () => {
 	const { posts, loadingPosts } = useAppSelector( state => state.post );
 	const dispatch = useAppDispatch();
 
-	const startCreatingPost = async(title: string, description: string) => {
+	const startCreatingPost = async(title: string, description: string, community: string) => {
 		dispatch( checkPosts() )
-		const post = await forUApi.post('/post', { title, description });
+		const post = await forUApi.post('/post', { title, description, community });
 		dispatch( createPost( post.data ) )	
 	}
 

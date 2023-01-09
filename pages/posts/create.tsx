@@ -1,21 +1,37 @@
+import { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { AppLayout } from "../../layouts";
 import { usePostStore } from '../../hooks/usePostStore';
+import { useCommunityStore } from '../../hooks/useCommunityStore';
+import { IUser } from '../../interfaces';
 
 interface IPostData{
 	title: string;
 	description: string;
+	communityId: string;
 }
 
 export default function create(){
 
+	const { data: session} = useSession();
+
 	const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<IPostData>();
 	const { startCreatingPost } = usePostStore();
+	const { communities, isCommunityReady, startLoadingCommunities } = useCommunityStore();
+	
+	useEffect(() => {
+		startLoadingCommunities()
+	}, [])
 
-	const onSubmit = ({ title, description }: IPostData) => {
-		startCreatingPost( title, description )
-		reset()
+	if( isCommunityReady ) return <></>
+	
+	const onSubmit = ({ title, description, communityId }: IPostData) => {
+		startCreatingPost( title, description, communityId );
+		reset();
 	}
+
+
 
 	return(
 		<AppLayout title={"Create your posts here"}>
@@ -40,6 +56,19 @@ export default function create(){
 									rows={5}
 									{ ...register('description')} 
 								></textarea>
+							</div>
+							
+							<div className='flex flex-col w-full mb-10'>
+								<label htmlFor="password" className='absolute translate-x-7 -translate-y-3 px-2 bg-white'>Comunidad</label>
+								<select 
+									className='p-3 border-2 border-black rounded-lg focus:border-sky-500 focus:outline-none resize-none'
+								>
+									{
+										communities.filter( community => community.users.includes( session?.user?._id as any)).map( community => (
+											<option value={ community._id } key={ community._id } { ...register('communityId')}>{community.name}</option>
+										))
+									} 
+								</select>
 							</div>
 
 							<div className='w-full flex justify-center mt-5'>

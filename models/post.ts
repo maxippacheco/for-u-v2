@@ -12,9 +12,14 @@ const postSchema = new Schema<IPost>({
 	},
 	user: {
 		type: Schema.Types.ObjectId,
-		ref: 'User'
+		ref: 'User',
+		required: true
 	},
-
+	community: {
+		required: true,
+		type: Schema.Types.ObjectId,
+		ref: 'community'
+	}
 
 
 }, {

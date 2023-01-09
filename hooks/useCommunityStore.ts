@@ -1,6 +1,5 @@
 import { forUApi } from '../api';
-import { ICommunity } from '../interfaces/community';
-import { checkingCommunities, createCommunity, loadCommunities } from '../store/community/communitySlice';
+import { checkingCommunities, createCommunity, loadCommunities, updateCommunityUsers } from '../store/community/communitySlice';
 import { useAppDispatch, useAppSelector } from './appHooks';
 
 export const useCommunityStore = () => {
@@ -20,11 +19,20 @@ export const useCommunityStore = () => {
 		dispatch(loadCommunities(communities));
 	}
 
+	const addUserToCommunity = async(id: string) => {
+		dispatch( checkingCommunities() );
+		const { data: community } = await forUApi.put(`/community/${ id }`);
+		dispatch( updateCommunityUsers( community ) )
+	}
+
 
 	return{
-		startCreattingCommunity,
-		startLoadingCommunities,
 		communities,
-		isCommunityReady
+		isCommunityReady,
+
+		// methods
+		startLoadingCommunities,
+		startCreattingCommunity,
+		addUserToCommunity
 	}
 }

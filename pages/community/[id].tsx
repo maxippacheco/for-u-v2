@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 export default function handler(){
 
 	const { data: session} = useSession()
-	const { posts, startLoadingAllPosts } = usePostStore();
+	const { posts } = usePostStore();
 
 
 
