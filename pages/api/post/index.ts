@@ -56,9 +56,11 @@ const createPost = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 	const newPost = new Post( data )
 	newPost.populate('user', '__v, password')
+	existCom.posts.push( newPost );
 
 	await db.connect();
- 	await newPost.save()
+ 	await newPost.save();
+	await existCom.save();
 	await db.disconnect();
 
 
