@@ -19,8 +19,20 @@ const postSchema = new Schema<IPost>({
 		required: true,
 		type: Schema.Types.ObjectId,
 		ref: 'community'
+	},
+	comments:[{
+		type: Schema.Types.ObjectId,
+		ref: 'community'
+	}],
+	status: {
+		type: Boolean,
+		required: true,
+		default: true
+	},
+	interactions: {
+		type: Schema.Types.ObjectId,
+		ref: 'Interactions'
 	}
-
 
 }, {
 	timestamps: true

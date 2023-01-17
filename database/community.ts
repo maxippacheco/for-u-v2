@@ -4,7 +4,6 @@ import { Community } from '../models';
 
 export const getAllCommunities = async() => {
 	await db.connect();
-	// TODO POPULATE
 	const communities = await Community.find().populate([
 		{
 			path: 'posts',
@@ -34,7 +33,6 @@ export const getAllCommunities = async() => {
 
 export const getCommunityById = async( id: string ) => {
 	await db.connect();
-	// TODO POPULATE
 	const community = await Community.findById( id ).populate([
 		{
 			path: 'posts',

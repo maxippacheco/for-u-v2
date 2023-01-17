@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Model, Types } from 'mongoose';
+import mongoose, { Schema, model, Model } from 'mongoose';
 import { ICommunity } from '../interfaces/community';
 
 const communitySchema = new Schema<ICommunity>({
