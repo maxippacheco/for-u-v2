@@ -8,7 +8,7 @@ interface ICommunityData{
 
 export default function create(){
 
-	const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<ICommunityData>();
+	const { register, handleSubmit, formState: { errors }, reset } = useForm<ICommunityData>();
 	const { startCreattingCommunity } = useCommunityStore();
 
 	const onSubmit = ({ name }: ICommunityData) => {

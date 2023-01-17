@@ -17,10 +17,10 @@ export const Post = ({ post }: Props) => {
 				<div className='p-2 flex items-center'>
 					<div className='w-16 h-16 bg-gray-300 rounded-full' />
 					<div className='flex grow justify-between'>
-						<div className='flex lg:flex-row flex-col'>
-							<span className='mx-1.5 text-gray-800 font-semibold'>{ post.user.name }</span>
+						<div className='flex lg:flex-row flex-col gap-x-3'>
+							<span className='ml-3 text-gray-800 font-semibold'>{ post.user.name }</span>
 							<span 
-								className='mx-1.5 text-gray-800 text-sm md:text-base cursor-pointer'
+								className='text-gray-800 ml-3 lg:ml-0 text-sm md:text-base cursor-pointer'
 								onClick={ () => router.push(`/community/${ post.community._id }`)}
 							>Compartio un post</span>
 						</div>
@@ -36,7 +36,10 @@ export const Post = ({ post }: Props) => {
 						<AiOutlineDislike className="text-3xl text-gray-800 hover:bg-red-500 rounded-full" />
 					</div>
 					<div>
-						<AiOutlineComment className="text-3xl text-gray-800 cursor-pointer hover:text-sky-500" />
+						<AiOutlineComment 
+							className="text-3xl text-gray-800 cursor-pointer hover:text-sky-500" 
+							onClick={() => router.push(`/posts/${ post._id }`)} 
+						/>
 					</div>
 				</div>
 			</div>

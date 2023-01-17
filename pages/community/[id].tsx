@@ -60,7 +60,7 @@ export default function handler({ community }: Props){
 // You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
 
 export const getStaticPaths: GetStaticPaths = async () => {
-	const allCommunities = await  dbCommunities.getAllCommunities()// your fetch function here 
+	const allCommunities = await dbCommunities.getAllCommunities()// your fetch function here 
 
 	return {
 		paths: allCommunities.map( ({ _id }) => ({

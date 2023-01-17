@@ -1,6 +1,6 @@
 import { forUApi } from "../api";
 import { IPost } from "../interfaces";
-import { checkPosts, createPost, loadPosts } from "../store/post";
+import { checkPosts, commentPost, createPost, loadPosts } from "../store/post";
 import { useAppDispatch, useAppSelector } from "./appHooks";
 
 export const usePostStore = () => {
@@ -19,13 +19,22 @@ export const usePostStore = () => {
 		dispatch( loadPosts( posts ) )
 	}
 
+	const createComment = async( postId: string, text:string ) => {
+		dispatch( checkPosts() );
+		
+		const { data: comment } = await forUApi.post(`/comment/${ postId }`, { text });
+		dispatch( commentPost( comment ) );
+	
+	}
+
 	return {
 		posts,
-		loadingPosts,
-
 		
+		// * methods
+		loadingPosts,
 		startCreatingPost,
 		startLoadingAllPosts,
+		createComment
 
 	}
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
@@ -5,10 +6,8 @@ import { MdPeopleOutline } from 'react-icons/md'
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
 import { useAuthStore, useCommunityStore, usePostStore } from '../hooks';
-import { IUser } from '../interfaces/user';
 import { forUApi } from '../api';
-import { IPost } from '../interfaces';
-import { useEffect } from 'react';
+import { IPost, IUser } from '../interfaces';
 
 interface Props {
   postsSSR: IPost[];
@@ -72,7 +71,7 @@ export default function Home({ postsSSR }: Props) {
         
         <div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'>
           <div className='h-1/2 w-full flex flex-col justify-center items-center'>
-            <div className='w-11/12 h-auto bg-white p-3 rounded-lg my-3'>
+            <div className='w-11/12 h-auto bg-white p-3 rounded-lg my-3 shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'>
               <h2 className='text-center'>Online Users</h2>
               <div className='flex flex-row items-center justify-between'>
                 {/* IMAGE */}
@@ -84,7 +83,7 @@ export default function Home({ postsSSR }: Props) {
               </div>
             </div>
 
-            <div className='w-11/12 h-auto bg-white p-3 rounded-lg'>
+            <div className='w-11/12 h-auto bg-white p-3 rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]'>
               <h2 className='text-center'>Recommended foros</h2>
                 {/* IMAGE */}
 

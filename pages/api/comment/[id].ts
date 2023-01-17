@@ -24,15 +24,25 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 const createComment = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { postId } = req.query as { postId: string };
+	const { postId } = req.query;
 	const { text } = req.body;
 
 	const user = await getSession({ req });
 	const post = await Post.findById( postId );
 
-	if( !user || !post || !text ){
+	if( !user ){
 		return res.status(400).json({
-			message: 'BAD REQUEST - VALIDATIONS'
+			message: 'BAD REQUEST - VALIDATIONS - USER'
+		})
+	}
+	if( !post ){
+		return res.status(400).json({
+			message: 'BAD REQUEST - VALIDATIONS - POST'
+		})
+	}
+	if( !text ){
+		return res.status(400).json({
+			message: 'BAD REQUEST - VALIDATIONS - TEXT'
 		})
 	}
 
