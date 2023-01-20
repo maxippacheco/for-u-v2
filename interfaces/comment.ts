@@ -5,7 +5,7 @@ export interface IComment {
 	_id?: string;
 	text: string;
 	user_comment: IUser;
-	created_at: string;
+	createdAt: string;
 	post_comment: IPost;
 	community_name: string;
 }

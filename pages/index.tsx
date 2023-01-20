@@ -8,6 +8,7 @@ import { Post } from '../components/posts';
 import { useAuthStore, useCommunityStore, usePostStore } from '../hooks';
 import { forUApi } from '../api';
 import { IPost, IUser } from '../interfaces';
+import { RecommendedCommunities } from '../components/ui/RecommendedCommunities';
 
 interface Props {
   postsSSR: IPost[];
@@ -15,9 +16,9 @@ interface Props {
 
 export default function Home({ postsSSR }: Props) {
 
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const { startSetttingUser, isChecking } = useAuthStore();
-  const { startLoadingCommunities, communities, isCommunityReady, addUserToCommunity } = useCommunityStore();
+  const { startLoadingCommunities, communities } = useCommunityStore();
   const { startLoadingAllPosts, posts  } = usePostStore();
   
   useEffect(() => {
@@ -39,8 +40,6 @@ export default function Home({ postsSSR }: Props) {
 
   return (
     <AppLayout title="Welcome to For U">
-
-
       <div className='w-full md:h-auto h-auto flex flex-row'>
 
         <div className='hidden xl:flex w-1/4 bg-gray-100 h-home sticky'>
@@ -89,18 +88,7 @@ export default function Home({ postsSSR }: Props) {
 
                 {
                   communities.slice(0, 3).map( community => (
-                    <div className='flex flex-row items-center justify-between my-4' key={ community._id }>
-                      <div className='flex flex-row items-center'>
-                        <div className='w-10 h-10 bg-gray-600 mr-2 rounded-full' />
-                        <span>{community.name}</span>
-                      </div>
-                      {
-                        
-                        community.users.find( user => user._id !== session?.user?._id ) 
-                        ? <MdPeopleOutline className='xl:flex hidden text-2xl cursor-pointer text-sky-500' />
-                        : <AiOutlineUsergroupAdd className='xl:flex hidden text-2xl cursor-pointer' onClick={ () => addUserToCommunity( community._id )} />
-                      }
-                    </div>
+                    <RecommendedCommunities community={ community } key={ community._id } />
                   ))
                 }
 

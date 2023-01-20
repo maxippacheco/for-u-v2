@@ -32,9 +32,10 @@ export const postSlice = createSlice({
 		},
 		commentPost(state, { payload }: PayloadAction<IComment>){
 			state.posts.map( post => {
-				if( post._id !== payload._id ) return;
+				if( post._id === payload._id ) {
+					post.comments.push(payload);					
+				};
 
-				post.comments.push(payload);
 			})
 		}	
   },

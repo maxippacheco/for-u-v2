@@ -20,9 +20,11 @@ export const usePostStore = () => {
 	}
 
 	const createComment = async( postId: string, text:string ) => {
-		dispatch( checkPosts() );
-		
+		dispatch( checkPosts() );		
+
 		const { data: comment } = await forUApi.post(`/comment/${ postId }`, { text });
+		console.log(comment);
+		
 		dispatch( commentPost( comment ) );
 	
 	}

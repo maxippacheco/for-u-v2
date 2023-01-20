@@ -3,6 +3,7 @@ import { getSession } from 'next-auth/react';
 import Comment from '../../../models/comment';
 import Post from '../../../models/post';
 import { IComment } from '../../../interfaces/comment';
+import { db } from '../../../database';
 
 type Data = 
 | { message: string }
@@ -24,13 +25,14 @@ export default function (req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 
 const createComment = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
-	const { postId } = req.query;
+	const { id } = req.query;
 	const { text } = req.body;
-
-	const user = await getSession({ req });
-	const post = await Post.findById( postId );
-
-	if( !user ){
+	
+	await db.connect();
+	const session = await getSession({ req });
+	const post = await Post.findById( id );
+	
+	if( !session ){
 		return res.status(400).json({
 			message: 'BAD REQUEST - VALIDATIONS - USER'
 		})
@@ -47,13 +49,22 @@ const createComment = async(req: NextApiRequest, res: NextApiResponse<Data>) => 
 	}
 
 	const data = { 
-		user_comment: user,
+		user_comment: session.user,
 		text,
 		post_comment: post,
 		community_name: post?.community.name
 	}
 
 	const comment = new Comment(data);
+	post.comments.push( comment );
+
+	await Promise.all([
+		comment.save(),
+		post.save()
+	])
+
+	await db.disconnect()
+	
 
 	res.json( comment );
 

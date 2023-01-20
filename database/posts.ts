@@ -31,7 +31,18 @@ export const getPostById = async( id: string ) => {
 		{
 			path: 'community',
 			model: 'Community'
-		}
+		},
+		{
+			path: 'comments',
+			model: 'Comment',
+			populate: [
+				{
+					path: 'user_comment',
+					model: 'User',
+					select: 'name email _id'
+				}
+			]
+		},
 	]).lean();
 	await db.disconnect();
 

@@ -1,10 +1,11 @@
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { useForm } from 'react-hook-form';
+import { usePostStore } from '../../hooks/usePostStore';
 import { AppLayout } from "../../layouts";
 import { dbPosts } from "../../database";
 import { IPost } from '../../interfaces';
 import { Post } from '../../components/posts';
-import { useForm } from 'react-hook-form';
-import { usePostStore } from '../../hooks/usePostStore';
+import { Comment } from '../../components/comment';
 
 
 interface Props {
@@ -18,16 +19,18 @@ interface ICommentData{
 export default function handler({ post }: Props){
 
 	
-	const { register, setValue, handleSubmit, formState: { errors } } = useForm<ICommentData>();
+	const { register, handleSubmit, formState: { errors } } = useForm<ICommentData>();
 	const { createComment } = usePostStore();
 
-	const onSubmit = ({ text }: ICommentData) => {
-		createComment(post._id, text);
+
+	const onSubmit = ({ text }: ICommentData) => {		
+
+		createComment( post._id, text);
 			
 	}
 
 	return(
-		<AppLayout title="">
+		<AppLayout title="Hola">
 			<div className="w-full md:h-auto h-auto flex flex-row">
 				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'/>
 				<div className='grow md:w-2/4 h-screen'>
@@ -46,16 +49,11 @@ export default function handler({ post }: Props){
 
 					</div>
 					{/* //TODO comment component */}
-						<div className='mx-9 flex flex-row w-full gap-x-4 items-center'>
-							<div className='h-16 w-16 bg-gray-300 rounded-full' />	
-							<div className='flex flex-col bg-gray-300 p-3 rounded-3xl'>
-								<div className="flex flex-row gap-x-1">
-									<span className='font-bold'>John Doe</span>
-									<span>18 minutes ago</span>
-								</div>
-								<span className='text-sm'>Test comment test</span>
-							</div>
-						</div>
+					{
+						post.comments.map( comment => (
+							<Comment comment={ comment } key={ comment._id } />
+						))
+					}	
 				</div>
 				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky' />
 			</div>
@@ -87,9 +85,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
 	const { id } = params as { id: string }
 
-	console.log( id );
-	
-
 	const post = await dbPosts.getPostById( id ) // your fetch function here 
 
 	if( !post ){
@@ -108,3 +103,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		revalidate: 60 * 60 * 24
 	}
 }
+
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+// import { GetServerSideProps } from 'next'
+// import forUApi from '../../api/config';
+
+// export const getServerSideProps: GetServerSideProps = async ( req) => {
+
+// 	const { id } = req.query as { id: string };
+
+// 	// const post = await dbPosts.getPostById( id ); // your fetch function here 
+
+// 	return {
+// 		props: {
+// 			id	
+// 		}
+// 	}
+// }

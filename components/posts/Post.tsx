@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai'
 import { IPost } from '../../interfaces';
@@ -10,7 +10,11 @@ interface Props{
 
 export const Post = ({ post }: Props) => {
 	
-	const router = useRouter()
+	const router = useRouter();
+	const [interaction, setInteraction] = useState({
+		like: false,
+		dislike: false
+	})
 
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
