@@ -10,11 +10,21 @@ interface Props{
 
 export const Post = ({ post }: Props) => {
 	
+	// todo optimize with design pattern
+
 	const router = useRouter();
-	const [interaction, setInteraction] = useState({
-		like: false,
-		dislike: false
-	})
+	const [like, setLike] = useState(false);
+	const [dislike, setDislike] = useState(false);
+
+	const toggleInteractionButton = ( action: string ) => {
+		if( action === 'like'){
+			setLike(!like);
+		}
+
+		if( action === 'dislike'){
+			setDislike(!dislike)
+		}
+	}
 
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
@@ -36,8 +46,22 @@ export const Post = ({ post }: Props) => {
 				</div> 
 				<div className='w-full flex flex-row justify-between px-11 pb-3'>
 					<div className='flex flex-row'>
-						<AiOutlineLike className="text-3xl mr-3 text-gray-800 hover:bg-red-500 rounded-full" />
-						<AiOutlineDislike className="text-3xl text-gray-800 hover:bg-red-500 rounded-full" />
+						<div className='flex flex-row items-center gap-x-1'>
+							<AiOutlineLike 
+								className={`text-3xl rounded-full cursor-pointer hover:text-sky-500 ${ like ? 'text-sky-500' : 'text-gray-800' }`} 
+								onClick={() => toggleInteractionButton('like')} 
+							/>
+							<span>1</span>
+
+						</div>
+						<div className='flex flex-row items-center gap-x-1'>
+							<AiOutlineDislike 
+								className={`text-3xl ml-3 rounded-full cursor-pointer hover:text-sky-500 ${ dislike ? 'text-sky-500' : 'text-gray-800' }`} 
+								onClick={() => toggleInteractionButton('dislike')} 
+							/>
+							<span>1</span>
+
+						</div>
 					</div>
 					<div>
 						<AiOutlineComment 

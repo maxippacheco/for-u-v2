@@ -58,7 +58,6 @@ const createPost = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 	existCom.posts.push( newPost );
 
 	await db.connect();
-	// TODO arreglar populate
  	await (await newPost.save()).populate([
 		{
 			path: 'user',
