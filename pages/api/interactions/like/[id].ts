@@ -32,13 +32,13 @@ export default async function(req: NextApiRequest, res: NextApiResponse<Data>) {
 		});
 	}
 
-	if( post.interactions.likes.find( userLikedPost => userLikedPost._id === user?._id )){
-		return res.status(400).json({
-			message: 'BAD REQUEST - USER ALREADY LIKED POST'
-		});
-	}
+	// if( post.interactions.likes.includes(user?._id as any)){
+	// 	return res.status(400).json({
+	// 		message: 'BAD REQUEST - USER ALREADY LIKED POST'
+	// 	});
+	// }
 
-	post.interactions.likes.push( user as IUser );
+	post.likes.push( user as IUser );
 	await post.save();
 
 	res.json( post )

@@ -10,14 +10,9 @@ export interface IPost {
 	user:        IUser;
 	community:   ICommunity;
 	comments:    IComment[];
-	interactions: IInteractions;
+	likes: IUser[];
+	dislikes: IUser[];
 	status:     boolean;
 	createdAt:   string;
 	updatedAt:   string;
-}
-
-export interface IInteractions{
-	id?: string;
-	likes: IUser[];
-	dislikes: IUser[];
 }

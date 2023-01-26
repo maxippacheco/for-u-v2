@@ -29,10 +29,14 @@ const postSchema = new Schema<IPost>({
 		required: true,
 		default: true
 	},
-	interactions: {
+	likes: [{
 		type: Schema.Types.ObjectId,
-		ref: 'Interactions'
-	}
+		ref: 'User'
+	}],
+	dislikes: [{
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	}],
 
 }, {
 	timestamps: true

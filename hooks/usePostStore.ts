@@ -29,6 +29,7 @@ export const usePostStore = () => {
 
 		dispatch( checkPosts() );
 		const { data: post } = await forUApi.put(`/interactions/like/${ postId }`);
+		console.log(post);
 		dispatch( likePost( post ) );
 	
 	}

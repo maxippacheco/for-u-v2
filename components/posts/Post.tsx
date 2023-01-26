@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/router';
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai'
 import { IPost } from '../../interfaces';
+import { usePostStore } from '../../hooks';
 
 
 interface Props{
@@ -13,19 +14,23 @@ export const Post = ({ post }: Props) => {
 	// todo optimize with design pattern
 
 	const router = useRouter();
+	
 	const [like, setLike] = useState(false);
 	const [dislike, setDislike] = useState(false);
+
+	const { startLikingPost } = usePostStore();
 
 	const toggleInteractionButton = ( action: string ) => {
 		if( action === 'like'){
 			setLike(!like);
+			startLikingPost(post._id)
 		}
 
 		if( action === 'dislike'){
 			setDislike(!dislike)
 		}
 	}
-
+	
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
 				<div className='p-2 flex items-center'>
