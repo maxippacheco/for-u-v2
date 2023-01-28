@@ -31,7 +31,7 @@ export default function handler({ post }: Props){
 
 	return(
 		<AppLayout title="Hola">
-			<div className="w-full md:h-auto h-auto flex flex-row">
+			<div className="w-full md:h-auto h-[calc(100vh-5rem)] flex flex-row">
 				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'/>
 				<div className='grow md:w-2/4 h-screen'>
 					<Post post={ post } key={ post._id } />

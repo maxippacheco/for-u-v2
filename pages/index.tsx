@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
-import { AiOutlineComment, AiOutlineUserAdd, AiOutlineUsergroupAdd } from 'react-icons/ai';
-import { MdPeopleOutline } from 'react-icons/md'
+import { AiOutlineComment, AiOutlineUserAdd } from 'react-icons/ai';
 import { AppLayout } from '../layouts';
 import { Post } from '../components/posts';
 import { useAuthStore, useCommunityStore, usePostStore } from '../hooks';
@@ -59,7 +58,7 @@ export default function Home({ postsSSR }: Props) {
         </div>
 
         {/* Posts */}
-    		<div className='grow md:w-2/4 h-screen lg:overflow-y-scroll'>
+    		<div className='grow md:w-2/4 h-[calc(100vh-5rem)] lg:overflow-y-scroll'>
             {
               posts.map( post => (
                 <Post post={ post } key={ post._id } />

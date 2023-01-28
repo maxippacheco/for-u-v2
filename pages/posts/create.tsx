@@ -5,6 +5,7 @@ import { AppLayout } from "../../layouts";
 import { usePostStore } from '../../hooks/usePostStore';
 import { useCommunityStore } from '../../hooks/useCommunityStore';
 import { IUser } from '../../interfaces';
+import Swal from 'sweetalert2';
 
 interface IPostData{
 	title: string;
@@ -28,9 +29,9 @@ export default function create(){
 	
 	const onSubmit = ({ title, description, communityId }: IPostData) => {
 		startCreatingPost( title, description, communityId );
+
 		reset();
 	}
-
 
 
 	return(

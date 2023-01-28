@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { AiOutlineUsergroupAdd } from 'react-icons/ai';
 import { MdPeopleOutline } from 'react-icons/md';
@@ -10,6 +11,7 @@ interface Props{
 
 export const RecommendedCommunities = ({ community }: Props) => {
 
+	const router = useRouter();
   const { data: session } = useSession()
 	const { addUserToCommunity } = useCommunityStore();
 
@@ -17,7 +19,10 @@ export const RecommendedCommunities = ({ community }: Props) => {
 		<div className='flex flex-row items-center justify-between my-4'>
 			<div className='flex flex-row items-center'>
 				<div className='w-10 h-10 bg-gray-600 mr-2 rounded-full' />
-				<span>{community.name}</span>
+				<span 
+					className='hover:text-sky-500 hover:underline cursor-pointer'
+					onClick={ () => router.push(`/community/${ community._id }`) }
+				>{ community.name }</span>
 			</div>
 			{
 				

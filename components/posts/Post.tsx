@@ -1,36 +1,48 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai'
-import { IPost } from '../../interfaces';
+import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai';
+import { IPost, IUser } from '../../interfaces';
 import { usePostStore } from '../../hooks';
-
+import { useSession } from 'next-auth/react';
 
 interface Props{
 	post: IPost;
 }
 
+
+// todo optimize with design pattern
 export const Post = ({ post }: Props) => {
 	
-	// todo optimize with design pattern
-
-	const router = useRouter();
-	
-	const [like, setLike] = useState(false);
+	const [like, setLike] = useState( false );
 	const [dislike, setDislike] = useState(false);
 
-	const { startLikingPost } = usePostStore();
+	const router = useRouter();
+	const { data: session } = useSession();
 
+	const { startLikingPost } = usePostStore();
+	
+	if(!session){
+		return <></>;
+	}
+	
+	// useEffect(() => {
+	// 	if( post.likes.includes( session.user?._id as any ) ){
+	// 		setLike( true )
+	// 		console.log(like);
+	// 	}
+	// }, [post, session])
+	
 	const toggleInteractionButton = ( action: string ) => {
-		if( action === 'like'){
+		if( action === 'like' ){
 			setLike(!like);
 			startLikingPost(post._id)
 		}
 
-		if( action === 'dislike'){
+		if( action === 'dislike' ){
 			setDislike(!dislike)
 		}
 	}
-	
+		
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
 				<div className='p-2 flex items-center'>

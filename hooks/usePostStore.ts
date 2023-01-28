@@ -28,9 +28,16 @@ export const usePostStore = () => {
 	const startLikingPost = async(postId:string) => {
 
 		dispatch( checkPosts() );
-		const { data: post } = await forUApi.put(`/interactions/like/${ postId }`);
-		console.log(post);
-		dispatch( likePost( post ) );
+		try {
+			const { data: post } = await forUApi.put(`/interactions/like/${ postId }`)
+
+			console.log(post);
+			dispatch( likePost( post ) );
+			
+		} catch (error) {
+			console.log(error);
+			
+		}
 	
 	}
 

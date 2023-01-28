@@ -14,39 +14,40 @@ export default function handler({ community }: Props){
 
 	const { data: session} = useSession()
 
-	console.log(community);
+	// const filteredPosts = community.posts.filter( post => post.community._id === community._id);
+	// console.log(filteredPosts);
 	
 
 	if( !session ) return <>Loading</>
 
 	return (
 		<AppLayout title="Community">
-      <div className='w-full md:h-auto h-auto flex flex-row'>
+      <div className='w-full md:h-auto h-screen flex flex-row'>
 				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'></div>
 
-				<div className='grow md:w-2/4 h-screen overflow-y-scroll'>
-					<div className="w-full h-52 bg-gray-900" />
-					<div className="w-40 h-40 rounded-full bg-sky-500 absolute top-48 translate-x-4 translate-y-5" />
-					<div className="w-full h-44 border-b ">
+				<div className='grow md:w-2/4 h-[calc(100vh-5rem)] overflow-y-scroll relative'>
+					<div className="w-full h-56 bg-gray-900" />
+					<div className="w-40 h-40 rounded-full bg-sky-500 absolute top-48 translate-x-4 -translate-y-10" />
+					<div className="w-full h-48 border-b">
 						<div className="flex flex-col h-full justify-end ml-3">
-							<div className="flex flex-row">
+							<div className="flex flex-row gap-3">
 								<div>432 Users</div>
 								<div>132 Posts</div>
 							</div>
-							<div className="text-lg pb-3">Owner: { community.owner.name }</div>
+							<div className="text-lg pb-5">Owner: { community.owner.name }</div>
 						</div>
 					</div>
+						<div>
+							{
+								community.posts.filter( post => post.community._id === community._id).map( post => (
+									<Post post={ post } key={ post._id } />
+								))
+							}
+						</div>
 
-					{
-						community.posts.map( post => {
-							console.log(post);
-							
-							return <></>
-						})
-					}
 				</div>
 
-				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'></div>
+				<div className='hidden lg:flex w-1/4 bg-gray-100 h-screen sticky'></div>
 
 
 			</div>
