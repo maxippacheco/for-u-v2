@@ -48,3 +48,5 @@ const addUserToCommunity = async(req: NextApiRequest, res: NextApiResponse<Data>
 	return res.json( community)
 
 }
+
+// todo remove user from community

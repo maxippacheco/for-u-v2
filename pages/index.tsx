@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { GetStaticProps } from 'next';
 import { useSession } from 'next-auth/react';
 import { AiOutlineComment, AiOutlineUserAdd } from 'react-icons/ai';
@@ -18,13 +18,14 @@ export default function Home({ postsSSR }: Props) {
   const { data: session } = useSession()
   const { startSetttingUser, isChecking } = useAuthStore();
   const { startLoadingCommunities, communities } = useCommunityStore();
-  const { startLoadingAllPosts, posts  } = usePostStore();
-  
+  const { startLoadingAllPosts, posts, loadingPosts } = usePostStore();
+
   useEffect(() => {
     startLoadingAllPosts( postsSSR );
   }, [])
     
-  if( isChecking ) return <>Holaaa</>
+  // todo improve loading
+  // if( isChecking || loadingPosts ) return <>Holaaa</>
 
   useEffect(() => {
     startSetttingUser( session?.user as IUser)
@@ -33,10 +34,14 @@ export default function Home({ postsSSR }: Props) {
   useEffect(() => {
     startLoadingCommunities()
   }, [])
+
+  if( !posts || !session ){
+    return <h1>LOADING</h1>
+  }
   
   
 
-
+  
   return (
     <AppLayout title="Welcome to For U">
       <div className='w-full md:h-auto h-auto flex flex-row'>
@@ -60,9 +65,15 @@ export default function Home({ postsSSR }: Props) {
         {/* Posts */}
     		<div className='grow md:w-2/4 h-[calc(100vh-5rem)] lg:overflow-y-scroll'>
             {
-              posts.map( post => (
-                <Post post={ post } key={ post._id } />
-              ))
+              posts.map( post => {
+	
+                return (
+                  <Post 
+                    post={ post } 
+                    key={ post._id } 
+                  />
+                )
+              })
             }
 
         </div>

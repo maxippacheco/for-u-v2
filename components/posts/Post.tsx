@@ -1,47 +1,68 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai';
-import { IPost, IUser } from '../../interfaces';
-import { usePostStore } from '../../hooks';
 import { useSession } from 'next-auth/react';
+import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai';
+import { IPost } from '../../interfaces';
+import { usePostStore } from '../../hooks';
 
 interface Props{
 	post: IPost;
+	// setIsLiked: () => void;
+	// setIsDisliked: () => void;
 }
 
 
-// todo optimize with design pattern
+// todo optimize with design pattern and separate the logic in other hook
 export const Post = ({ post }: Props) => {
-	
-	const [like, setLike] = useState( false );
-	const [dislike, setDislike] = useState(false);
 
+	// COMPONENT STATE
+  const [like, setLike] = useState(false);
+  const [dislike, setDislike] = useState(false);
+	
+	// Flag to know if the user liked the post
+	useEffect(() => {
+		if( post.likes.includes( session?.user?._id as any )){
+			setLike(true)
+		}
+	}, [])
+	
+
+	// HOOKS
 	const router = useRouter();
 	const { data: session } = useSession();
-
-	const { startLikingPost } = usePostStore();
+	const { startLikingPost, startUnlikingPost } = usePostStore();
 	
+	// FLAG TO KNOW IF THE SESSION IS ACTIVE
 	if(!session){
 		return <></>;
 	}
 	
-	// useEffect(() => {
-	// 	if( post.likes.includes( session.user?._id as any ) ){
-	// 		setLike( true )
-	// 		console.log(like);
-	// 	}
-	// }, [post, session])
-	
-	const toggleInteractionButton = ( action: string ) => {
-		if( action === 'like' ){
+	// ACTION THAT HANDLE COMPONENT EVENTS
+	const toggleInteractionButton = ( action: 'like' | 'dislike' ) => {
+
+		// TODO OPTIMIZE
+		if( action === 'like'){
 			setLike(!like);
-			startLikingPost(post._id)
+
+			if( like ) startUnlikingPost(post._id);
+			if( !like ) startLikingPost(post._id);
 		}
 
 		if( action === 'dislike' ){
-			setDislike(!dislike)
+			setDislike(!dislike);
 		}
+
+		// const interactionTypeHandler = {
+		// 	like: startLikingPost,
+		// 	dislike: startLikingPost
+		// }
+
+		// const handler = interactionTypeHandler[action];
+
+		// handler(post._id);
 	}
+ 
+	
 		
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
@@ -65,7 +86,7 @@ export const Post = ({ post }: Props) => {
 					<div className='flex flex-row'>
 						<div className='flex flex-row items-center gap-x-1'>
 							<AiOutlineLike 
-								className={`text-3xl rounded-full cursor-pointer hover:text-sky-500 ${ like ? 'text-sky-500' : 'text-gray-800' }`} 
+								className={`text-3xl rounded-full cursor-pointer hover:text-sky-500 ${ like ? 'text-sky-500' : 'test-gray-800'}`} 
 								onClick={() => toggleInteractionButton('like')} 
 							/>
 							<span>1</span>
@@ -73,7 +94,7 @@ export const Post = ({ post }: Props) => {
 						</div>
 						<div className='flex flex-row items-center gap-x-1'>
 							<AiOutlineDislike 
-								className={`text-3xl ml-3 rounded-full cursor-pointer hover:text-sky-500 ${ dislike ? 'text-sky-500' : 'text-gray-800' }`} 
+								className={`text-3xl ml-3 rounded-full cursor-pointer hover:text-sky-500`} 
 								onClick={() => toggleInteractionButton('dislike')} 
 							/>
 							<span>1</span>

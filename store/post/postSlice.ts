@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { IPost, IInteractions } from '../../interfaces/post';
+import { IPost } from '../../interfaces/post';
 import { IComment } from '../../interfaces/comment';
 
 
@@ -31,7 +31,7 @@ export const postSlice = createSlice({
 			state.posts = payload;
 		},
 		commentPost(state, { payload }: PayloadAction<IComment>){
-	
+			//todo fix
 			state.loadingPosts = false;
 			state.posts.map( post => {
 				if( post._id === payload._id ) {
@@ -44,8 +44,18 @@ export const postSlice = createSlice({
 		likePost(state, { payload }: PayloadAction<IPost>){
 			state.loadingPosts = false;
 			state.posts.map( post => {
-				if( post._id == payload._id){
-					post = payload;
+				if( post._id === payload._id){
+					post.likes.push( payload.user )
+				}
+
+				return post;
+			})
+		},
+		unlikePost( state, { payload }: PayloadAction<IPost> ){
+			state.loadingPosts = false;
+			state.posts.map( post => {
+				if( post._id === payload._id ){
+					post.likes.filter( user => user._id !== payload.user._id );
 				}
 
 				return post;
@@ -62,7 +72,8 @@ export const {
 	loadPosts, 
 	createPost, 
 	commentPost, 
-	likePost
+	likePost,
+	unlikePost
 
 } = postSlice.actions
 

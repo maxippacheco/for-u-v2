@@ -1,6 +1,6 @@
 import { forUApi } from "../api";
 import { IPost } from "../interfaces";
-import { checkPosts, commentPost, createPost, likePost, loadPosts } from "../store/post";
+import { checkPosts, commentPost, createPost, likePost, loadPosts, unlikePost } from "../store/post";
 import { useAppDispatch, useAppSelector } from "./appHooks";
 
 export const usePostStore = () => {
@@ -41,6 +41,21 @@ export const usePostStore = () => {
 	
 	}
 
+	const startUnlikingPost = async( postId: string ) => {
+	
+		dispatch( checkPosts() );
+		try {
+			const { data: post } = await forUApi.put(`/interactions/unlike/${ postId }`)
+
+			dispatch( unlikePost( post ) );
+			console.log(post);
+			
+		} catch (error) {
+			console.log(error);
+			
+		}	
+	}
+
 	return {
 		posts,
 		
@@ -49,7 +64,8 @@ export const usePostStore = () => {
 		startCreatingPost,
 		startLoadingAllPosts,
 		createComment,
-		startLikingPost
+		startLikingPost,
+		startUnlikingPost
 
 	}
 }

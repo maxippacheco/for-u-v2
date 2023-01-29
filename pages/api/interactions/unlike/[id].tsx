@@ -32,13 +32,18 @@ export default async function(req: NextApiRequest, res: NextApiResponse<Data>) {
 		});
 	}
 
-	if( post.likes.includes(user?._id as any)){
+	if( !post.likes.includes(user?._id as any) ){
 		return res.status(400).json({
-			message: 'BAD REQUEST - USER ALREADY LIKED POST'
+			message: 'BAD REQUEST - USER DIDNT LIKED THE POST'
 		});
 	}
 
-	post.likes.push( user as IUser );
+
+  // search index of the like
+  const index = post.likes.indexOf(session.user?._id as any);
+  // remove from index
+  post.likes.splice(index, 1);
+
 	await post.save();
 
 	res.json( post )

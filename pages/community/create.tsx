@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 import { useCommunityStore } from '../../hooks';
 import { AppLayout } from "../../layouts";
 
@@ -14,6 +15,9 @@ export default function create(){
 	const onSubmit = ({ name }: ICommunityData) => {
 		startCreattingCommunity( name );
 		reset()
+
+		// todo check error
+		Swal.fire('Community created', `${ name }`, 'success');
 	}
 
 	return(

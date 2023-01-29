@@ -29,6 +29,8 @@ export default function create(){
 	
 	const onSubmit = ({ title, description, communityId }: IPostData) => {
 		startCreatingPost( title, description, communityId );
+		// todo check error
+		Swal.fire('Post created', `${ title }`, 'success');
 
 		reset();
 	}
