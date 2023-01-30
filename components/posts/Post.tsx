@@ -26,11 +26,18 @@ export const Post = ({ post }: Props) => {
 		}
 	}, [])
 	
+	// Flag to know if the user disliked the post
+	useEffect(() => {
+		if( post.dislikes.includes( session?.user?._id as any )){
+			setDislike(true)
+		}
+	}, [])
+	
 
 	// HOOKS
 	const router = useRouter();
 	const { data: session } = useSession();
-	const { startLikingPost, startUnlikingPost } = usePostStore();
+	const { startLikingPost, startUnlikingPost, startDislikingPost, startUndislikingPost } = usePostStore();
 	
 	// FLAG TO KNOW IF THE SESSION IS ACTIVE
 	if(!session){
@@ -40,7 +47,6 @@ export const Post = ({ post }: Props) => {
 	// ACTION THAT HANDLE COMPONENT EVENTS
 	const toggleInteractionButton = ( action: 'like' | 'dislike' ) => {
 
-		// TODO OPTIMIZE
 		if( action === 'like'){
 			setLike(!like);
 
@@ -50,6 +56,9 @@ export const Post = ({ post }: Props) => {
 
 		if( action === 'dislike' ){
 			setDislike(!dislike);
+
+			if( dislike ) startUndislikingPost(post._id);
+			if( !dislike ) startDislikingPost(post._id);
 		}
 
 		// const interactionTypeHandler = {
@@ -89,15 +98,15 @@ export const Post = ({ post }: Props) => {
 								className={`text-3xl rounded-full cursor-pointer hover:text-sky-500 ${ like ? 'text-sky-500' : 'test-gray-800'}`} 
 								onClick={() => toggleInteractionButton('like')} 
 							/>
-							<span>1</span>
+							<span>{ post.likes.length }</span>
 
 						</div>
 						<div className='flex flex-row items-center gap-x-1'>
 							<AiOutlineDislike 
-								className={`text-3xl ml-3 rounded-full cursor-pointer hover:text-sky-500`} 
+								className={`text-3xl ml-3 rounded-full cursor-pointer hover:text-sky-500 ${ dislike ? 'text-sky-500' : 'test-gray-800'}`} 
 								onClick={() => toggleInteractionButton('dislike')} 
 							/>
-							<span>1</span>
+							<span>{ post.dislikes.length }</span>
 
 						</div>
 					</div>

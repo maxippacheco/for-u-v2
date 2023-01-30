@@ -1,7 +1,16 @@
-import { forUApi } from "../api";
-import { IPost } from "../interfaces";
-import { checkPosts, commentPost, createPost, likePost, loadPosts, unlikePost } from "../store/post";
 import { useAppDispatch, useAppSelector } from "./appHooks";
+import { forUApi } from "../api";
+import { 
+	checkPosts,
+	loadPosts,
+	createPost,
+	commentPost,
+	likePost,
+	unlikePost,
+	dislikePost,
+	undislikePost,
+} from "../store/post";
+import { IPost } from "../interfaces";
 
 export const usePostStore = () => {
 	
@@ -30,8 +39,6 @@ export const usePostStore = () => {
 		dispatch( checkPosts() );
 		try {
 			const { data: post } = await forUApi.put(`/interactions/like/${ postId }`)
-
-			console.log(post);
 			dispatch( likePost( post ) );
 			
 		} catch (error) {
@@ -48,7 +55,35 @@ export const usePostStore = () => {
 			const { data: post } = await forUApi.put(`/interactions/unlike/${ postId }`)
 
 			dispatch( unlikePost( post ) );
+			
+		} catch (error) {
+			console.log(error);
+			
+		}	
+	}
+
+
+	const startDislikingPost = async( postId: string ) => {
+		dispatch( checkPosts() );
+		try {
+			const { data: post } = await forUApi.put(`/interactions/dislike/${ postId }`)
+
+			dispatch( dislikePost( post ) );
 			console.log(post);
+			
+		} catch (error) {
+			console.log(error);
+			
+		}	
+	}
+
+		const startUndislikingPost = async( postId: string ) => {
+	
+		dispatch( checkPosts() );
+		try {
+			const { data: post } = await forUApi.put(`/interactions/undislike/${ postId }`)
+
+			dispatch( undislikePost( post ) );
 			
 		} catch (error) {
 			console.log(error);
@@ -65,7 +100,9 @@ export const usePostStore = () => {
 		startLoadingAllPosts,
 		createComment,
 		startLikingPost,
-		startUnlikingPost
+		startUnlikingPost,
+		startDislikingPost,
+		startUndislikingPost
 
 	}
 }
