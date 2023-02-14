@@ -1,12 +1,17 @@
 import { useState } from 'react';
-import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
+import defaultUser from '../../assets/default_user.png'
 
 export const Navbar = () => {
 	
-  const [isMenuOpened, setToggleMenu] = useState(true);
+
+	const [isMenuOpened, setToggleMenu] = useState(true);
 	const router = useRouter();
+	const { data: session } = useSession();
 
   const handleToggleMenu = () => setToggleMenu(!isMenuOpened);
 	
@@ -42,8 +47,13 @@ export const Navbar = () => {
 						}
 					</div>
 					
-					<div className="flex items-center mr-3 justify-end">
-						<div className="w-14 h-14 rounded-full bg-gray-100" />
+					<div className="flex items-center w-20 h-20 mr-3 justify-end">
+						<Image
+							src={ defaultUser }
+							alt='Default user'
+							className="w-14 h-14 rounded-full bg-gray-100 cursor-pointer"
+							onClick={ () => router.push(`/user/${ session?.user?._id! }`) }
+						/>
 					</div>
 
 				</div>

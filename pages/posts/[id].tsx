@@ -18,15 +18,16 @@ interface ICommentData{
 
 export default function handler({ post }: Props){
 
+	// todo => post functionalities doesnt work idk why
 	
 	const { register, handleSubmit, formState: { errors } } = useForm<ICommentData>();
 	const { createComment } = usePostStore();
-
+	
 
 	const onSubmit = ({ text }: ICommentData) => {		
 
 		createComment( post._id, text);
-			
+		
 	}
 
 	return(
@@ -100,7 +101,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		props: {
 			post
 		},
-		revalidate: 60 * 60 * 24
+		revalidate: 1
 	}
 }
 
