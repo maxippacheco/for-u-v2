@@ -17,7 +17,7 @@ export const AppLayout:FC<ReactFCWithChildren> = ({ children, title }) => {
 			<div>
 				<Navbar />
 
-				<main>{ children }</main>
+				<main id='appModal'>{ children }</main>
 			</div>
 		
 		</>

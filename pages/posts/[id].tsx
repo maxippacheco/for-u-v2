@@ -1,4 +1,5 @@
-import { GetStaticProps, GetStaticPaths } from 'next'
+import { useEffect } from 'react';
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { useForm } from 'react-hook-form';
 import { usePostStore } from '../../hooks/usePostStore';
 import { AppLayout } from "../../layouts";
@@ -21,12 +22,20 @@ export default function handler({ post }: Props){
 	// todo => post functionalities doesnt work idk why
 	
 	const { register, handleSubmit, formState: { errors } } = useForm<ICommentData>();
-	const { createComment } = usePostStore();
+	const { createComment, activePost, setPostById } = usePostStore();
+
+	
+	useEffect(() => {
+		setPostById( post._id );
+	}, [])
 	
 
-	const onSubmit = ({ text }: ICommentData) => {		
+	const onSubmit = async({ text }: ICommentData) => {		
 
-		createComment( post._id, text);
+		const comment = await createComment( post._id, text);
+		console.log(comment);
+
+		
 		
 	}
 
@@ -35,6 +44,7 @@ export default function handler({ post }: Props){
 			<div className="w-full md:h-auto h-[calc(100vh-5rem)] flex flex-row">
 				<div className='hidden lg:flex w-1/4 bg-gray-100 h-home sticky'/>
 				<div className='grow md:w-2/4 h-screen'>
+					{/* //TODO: FIX */}
 					<Post post={ post } key={ post._id } />
 
 					<div className='m-5 flex flex-row w-full gap-x-4 items-center'>
@@ -49,9 +59,9 @@ export default function handler({ post }: Props){
 						</form>
 
 					</div>
-					{/* //TODO comment component */}
+					{/* THIS WAY IT WORKS */}
 					{
-						post.comments.map( comment => (
+						activePost?.comments.map( comment => (
 							<Comment comment={ comment } key={ comment._id } />
 						))
 					}	
@@ -101,24 +111,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 		props: {
 			post
 		},
-		revalidate: 1
+		revalidate: 60 * 60 * 16
 	}
 }
 
-// You should use getServerSideProps when:
-// - Only if you need to pre-render a page whose data must be fetched at request time
-// import { GetServerSideProps } from 'next'
-// import forUApi from '../../api/config';
-
-// export const getServerSideProps: GetServerSideProps = async ( req) => {
-
-// 	const { id } = req.query as { id: string };
-
-// 	// const post = await dbPosts.getPostById( id ); // your fetch function here 
-
-// 	return {
-// 		props: {
-// 			id	
-// 		}
-// 	}
-// }

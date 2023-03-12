@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { AiOutlineLike, AiOutlineDislike, AiOutlineComment } from 'react-icons/ai';
 import { IPost } from '../../interfaces';
 import { usePostStore } from '../../hooks';
+
+import defaultUser from '../../assets/default_user.png'
 
 interface Props{
 	post: IPost;
@@ -61,14 +64,7 @@ export const Post = ({ post }: Props) => {
 			if( !dislike ) startDislikingPost(post._id);
 		}
 
-		// const interactionTypeHandler = {
-		// 	like: startLikingPost,
-		// 	dislike: startLikingPost
-		// }
 
-		// const handler = interactionTypeHandler[action];
-
-		// handler(post._id);
 	}
  
 	
@@ -76,7 +72,7 @@ export const Post = ({ post }: Props) => {
 	return (
 			<div className='grow m-2 h-auto shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px] mb-4 rounded-lg'>
 				<div className='p-2 flex items-center'>
-					<div className='w-16 h-16 bg-gray-300 rounded-full' />
+					<Image className='w-16 h-16 rounded-full' src={ defaultUser } alt="default_user" />
 					<div className='flex grow justify-between'>
 						<div className='flex lg:flex-row flex-col gap-x-3'>
 							<span className='ml-3 text-gray-800 font-semibold'>{ post.user.name }</span>

@@ -7,11 +7,13 @@ import { IComment } from '../../interfaces/comment';
 export interface PostState {
 	loadingPosts: boolean;
 	posts: IPost[];
+	activePost: IPost | null;
 }
 
 const initialState: PostState = {
 	loadingPosts: false,
-	posts: []
+	posts: [],
+	activePost: null
 }
 
 export const postSlice = createSlice({
@@ -30,15 +32,8 @@ export const postSlice = createSlice({
 			state.posts = payload;
 		},
 		commentPost(state, { payload }: PayloadAction<IComment>){
-			//todo fix
 			state.loadingPosts = false;
-			state.posts.map( post => {
-				if( post._id === payload._id ) {
-					post.comments.push(payload);
-				};
-
-				return post;
-			})
+			state.activePost?.comments.push(payload);
 		},
 		likePost(state, { payload }: PayloadAction<IPost>){
 			state.loadingPosts = false;
@@ -50,7 +45,6 @@ export const postSlice = createSlice({
 				return post;
 			})
 		},
-		// todo fix
 		unlikePost( state, { payload }: PayloadAction<IPost> ){
 			state.loadingPosts = false;
 			state.posts.map( post => {
@@ -71,7 +65,6 @@ export const postSlice = createSlice({
 				return post;
 			})
 		},
-		// todo fix
 		undislikePost( state, { payload }: PayloadAction<IPost> ){
 			state.loadingPosts = false;
 			state.posts.map( post => {
@@ -82,6 +75,11 @@ export const postSlice = createSlice({
 				return post;
 			})
 		},
+		setActivePost( state, { payload }: PayloadAction<IPost> ){
+			state.loadingPosts = false;
+			state.activePost = payload;
+		},
+
 
   },
 
@@ -96,7 +94,8 @@ export const {
 	likePost,
 	unlikePost,
 	dislikePost,
-	undislikePost
+	undislikePost,
+	setActivePost
 
 } = postSlice.actions
 
